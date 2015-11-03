@@ -43,7 +43,7 @@ func GetConfig() ([]Pet, error) {
 
     for rows.Next() {
         var pet Pet
-        rows.Scan(&pet.PetId, &pet.Breed, &pet.Name, &pet.DispenserId)
+        rows.Scan(&pet.PetId, &pet.Breed, &pet.Name, &pet.DispenserId, &pet.DongleId, &pet.Status)
         pets = append(pets, pet)
     }
     return pets, err

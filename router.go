@@ -15,6 +15,8 @@ type Pet struct {
     Breed       string  `json:"breed"`
     Name        string  `json:"name"`
     DispenserId int     `json:"dispenser_id"`
+    DongleId    int     `json:"dongle_id"`
+    Status      int     `json:"status"`
 }
 
 type Event struct {
