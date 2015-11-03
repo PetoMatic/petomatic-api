@@ -21,6 +21,12 @@ var routes = Routes{
         hello,
     },
     Route{
+        "Config",
+        "GET",
+        "/config",
+        Config,
+    },
+    Route{
         "PetStats",
         "GET",
         "/stats/{petId}/daily",

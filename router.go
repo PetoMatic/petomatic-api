@@ -10,7 +10,12 @@ import (
     "time"
 )
 
-type Action int
+type Pet struct {
+    PetId       int     `json:"pet_id"`
+    Breed       string  `json:"breed"`
+    Name        string  `json:"name"`
+    DispenserId int     `json:"dispenser_id"`
+}
 
 type Event struct {
     Event       string  `json:"event"`
@@ -88,4 +93,14 @@ func PetDailyStats (w http.ResponseWriter, r *http.Request) {
         return
     }
     json.NewEncoder(w).Encode(stats)
+}
+
+func Config (w http.ResponseWriter, r *http.Request) {
+    pets, err := GetConfig()
+    if err != nil {
+        fmt.Println("Error: ", err)
+        json.NewEncoder(w).Encode(err)
+        return
+    }
+    json.NewEncoder(w).Encode(pets)
 }

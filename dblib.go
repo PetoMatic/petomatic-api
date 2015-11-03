@@ -22,6 +22,23 @@ func RegisterEventDB(event Event) error {
     return err
 }
 
+func GetConfig() ([]Pet, error) {
+    var err error
+    pets := make([]Pet, 0)
+
+    rows, err := masterDB.Query("SELECT * FROM pets")
+    defer rows.Close()
+    if err != nil {
+        return pets, err
+    }
+
+    for rows.Next() {
+        var pet Pet
+        rows.Scan(&pet.PetId, &pet.Breed, &pet.Name, &pet.DispenserId)
+        pets = append(pets, pet)
+    }
+    return pets, err
+}
 
 func DailyStats(PetId int) (Statistics, error) {
     var err error
@@ -36,7 +53,6 @@ func DailyStats(PetId int) (Statistics, error) {
     for rows.Next() {
         var meal Meal
         rows.Scan(&meal.Quantity, &meal.StartDate, &meal.EndDate, &meal.Duration)
-        fmt.Println(meal)
         meals = append(meals, meal)
     }
 
