@@ -15,7 +15,7 @@ func checkError(desc string, err error) {
 
 
 func main() {
-    checkError("Error connecting to shopsdb:", InitDBConn("127.0.0.1", "5432", "petomaticdb", "petomatic"))
+    checkError("Error connecting to shopsdb:", InitDBConn("127.0.0.1", "5432", "petomaticdb", "postgres"))
     rrr := NewRouter()
     log.Fatal(http.ListenAndServe(":8080", rrr))
 }
