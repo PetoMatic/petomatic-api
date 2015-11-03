@@ -58,6 +58,7 @@ func NewRouter() (*mux.Router) {
 }
 
 func hello (w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
 }
 
@@ -80,6 +81,7 @@ func RegisterEvent (w http.ResponseWriter, r *http.Request) {
         return
     }
 
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     enc.Encode(event)
     fmt.Println(event)
 }
@@ -94,6 +96,7 @@ func PetDailyStats (w http.ResponseWriter, r *http.Request) {
         json.NewEncoder(w).Encode(err)
         return
     }
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     json.NewEncoder(w).Encode(stats)
 }
 
@@ -104,6 +107,7 @@ func Config (w http.ResponseWriter, r *http.Request) {
         json.NewEncoder(w).Encode(err)
         return
     }
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     json.NewEncoder(w).Encode(pets)
 }
 
@@ -121,9 +125,11 @@ func StopFood (w http.ResponseWriter, r *http.Request) {
     err := UpdatePetStatus(petId, status)
     if err != nil {
         fmt.Println("Error: ", err)
+        w.Header().Set("Access-Control-Allow-Origin", "*")
         json.NewEncoder(w).Encode(err)
         return
     }
+    w.Header().Set("Access-Control-Allow-Origin", "*")
 }
 
 func LovePet (w http.ResponseWriter, r *http.Request) {
@@ -144,6 +150,7 @@ func LovePet (w http.ResponseWriter, r *http.Request) {
         enc.Encode(err)
         return
     }
+    w.Header().Set("Access-Control-Allow-Origin", "*")
     enc.Encode(pet)
     fmt.Println(pet)
 }
