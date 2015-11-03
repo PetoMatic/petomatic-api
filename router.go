@@ -13,8 +13,9 @@ import (
 type Action int
 
 type Event struct {
-    Action      string
-    Timestampo  time.Time `json:"timestamp"`
+    Action      string  `json:"event"`
+    Timestamp   int     `json:"timestamp"`
+    Weight      int     `json:"weight"`
 }
 
 type Meal struct {
@@ -57,10 +58,11 @@ func RegisterEvent (w http.ResponseWriter, r *http.Request) {
     dec := json.NewDecoder(r.Body)
     err := dec.Decode(&event)
     if err != nil {
+        fmt.Println("Error: ", err)
         return
     }
-
     enc.Encode(event)
+    fmt.Println(event)
 }
 
 func PetStats (w http.ResponseWriter, r *http.Request) {
