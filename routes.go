@@ -33,6 +33,12 @@ var routes = Routes{
         PetDailyStats,
     },
     Route{
+        "StopFood",
+        "GET",
+        "/{yesno}/more/{petId}",
+        StopFood,
+    },
+    Route{
         "CreateEvent",
         "POST",
         "/event",

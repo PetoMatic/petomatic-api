@@ -49,6 +49,15 @@ func GetConfig() ([]Pet, error) {
     return pets, err
 }
 
+func UpdatePetStatus(PetId int, More int)  error {
+    var err error
+    res, err := masterDB.Exec("UPDATE pets SET status = $1 WHERE pet_id = $2", More, PetId)
+    if res != nil {
+        return err
+    }
+    return nil
+}
+
 func DailyStats(PetId int) (Statistics, error) {
     var err error
     var statistics Statistics

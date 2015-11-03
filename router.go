@@ -107,6 +107,25 @@ func Config (w http.ResponseWriter, r *http.Request) {
     json.NewEncoder(w).Encode(pets)
 }
 
+func StopFood (w http.ResponseWriter, r *http.Request) {
+    var status int
+    vars := mux.Vars(r)
+    petId, _ := strconv.Atoi(vars["petId"])
+    more, _ := vars["yesno"]
+    if more == "yes" {
+        status = 1
+    } else {
+        status = 0
+    }
+
+    err := UpdatePetStatus(petId, status)
+    if err != nil {
+        fmt.Println("Error: ", err)
+        json.NewEncoder(w).Encode(err)
+        return
+    }
+}
+
 func LovePet (w http.ResponseWriter, r *http.Request) {
     var pet Pet
 
