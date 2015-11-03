@@ -38,4 +38,10 @@ var routes = Routes{
         "/event",
         RegisterEvent,
     },
+    Route{
+        "AddPet",
+        "POST",
+        "/love/pet",
+        LovePet,
+    },
 }

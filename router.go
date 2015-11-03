@@ -104,3 +104,25 @@ func Config (w http.ResponseWriter, r *http.Request) {
     }
     json.NewEncoder(w).Encode(pets)
 }
+
+func LovePet (w http.ResponseWriter, r *http.Request) {
+    var pet Pet
+
+    enc := json.NewEncoder(w)
+    dec := json.NewDecoder(r.Body)
+    err := dec.Decode(&pet)
+    if err != nil {
+        fmt.Println("Error: ", err)
+        enc.Encode(err)
+        return
+    }
+
+    err = AddPet(pet)
+    if err != nil {
+        fmt.Println("Error: ", err)
+        enc.Encode(err)
+        return
+    }
+    enc.Encode(pet)
+    fmt.Println(pet)
+}

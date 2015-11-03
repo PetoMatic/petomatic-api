@@ -22,6 +22,15 @@ func RegisterEventDB(event Event) error {
     return err
 }
 
+func AddPet(pet Pet) error {
+    var err error
+    res, err := masterDB.Exec("INSERT INTO pets VALUES (nextval('pets_pet_id_seq'), $1, $2, $3)", pet.Breed, pet.Name, pet.DispenserId)
+    if res != nil {
+        return err
+    }
+    return nil
+}
+
 func GetConfig() ([]Pet, error) {
     var err error
     pets := make([]Pet, 0)
