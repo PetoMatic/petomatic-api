@@ -13,15 +13,19 @@ import (
 type Action int
 
 type Event struct {
-    Action      string  `json:"event"`
-    Timestamp   int     `json:"timestamp"`
+    Event       string  `json:"event"`
+    Id          int     `json:"id,omitempty"`
+    PetId       int     `json:"pet_id"`
+    Timestamp   int     `json:"timestamp,omitempty"`
+    Valid       string  `json:"valid,omitempty"`
     Weight      int     `json:"weight"`
 }
 
 type Meal struct {
-    EndDate     string  `json:"end_date"`
-    Quantity    float32 `json:"quantity"` 
-    StartDate   string  `json:"start_date"`
+    EndDate     time.Time  `json:"end_date"`
+    Duration    float32 `json:"duration"`
+    Quantity    int      `json:"quantity"` 
+    StartDate   time.Time  `json:"start_date"`
 }
 
 type Statistics struct {
@@ -54,32 +58,34 @@ func RegisterEvent (w http.ResponseWriter, r *http.Request) {
     var event Event
 
     enc := json.NewEncoder(w)
-
     dec := json.NewDecoder(r.Body)
     err := dec.Decode(&event)
     if err != nil {
         fmt.Println("Error: ", err)
+        enc.Encode(err)
         return
     }
+
+    err = RegisterEventDB(event)
+    if err != nil {
+        fmt.Println("Error: ", err)
+        enc.Encode(err)
+        return
+    }
+
     enc.Encode(event)
     fmt.Println(event)
 }
 
-func PetStats (w http.ResponseWriter, r *http.Request) {
-    var statistics Statistics
-    var meal Meal
-    
+func PetDailyStats (w http.ResponseWriter, r *http.Request) {
     vars := mux.Vars(r)
-    petId := vars["petId"]
-    meal.Quantity = 100
-    startDate := time.Now()
-    meal.StartDate = startDate.Format("02 Jan 2006 15:04:05") 
-    delta := 5 * time.Second
-    endDate := startDate.Add(delta)
-    meal.EndDate = endDate.Format("02 Jan 2006 15:04:05")
-    statistics.PetId, _ = strconv.Atoi(petId)
-    statistics.Meals = make([]Meal, 0, 1)
-    statistics.Meals = append(statistics.Meals, meal)
-    
-    json.NewEncoder(w).Encode(statistics)
+    petId, _ := strconv.Atoi(vars["petId"])
+
+    stats, err := DailyStats(petId) 
+    if err != nil {
+        fmt.Println("Error: ", err)
+        json.NewEncoder(w).Encode(err)
+        return
+    }
+    json.NewEncoder(w).Encode(stats)
 }

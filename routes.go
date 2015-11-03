@@ -23,8 +23,8 @@ var routes = Routes{
     Route{
         "PetStats",
         "GET",
-        "/stats/{petId}",
-        PetStats,
+        "/stats/{petId}/daily",
+        PetDailyStats,
     },
     Route{
         "CreateEvent",
